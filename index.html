@@ -1,0 +1,991 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Azmi Noteworthy Series: data visualisation and graphical presentation for the Advanced Diploma in Applied Epidemiology in Disease Control and Outbreak Management.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Charts That Guide Action</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: field-manual sidebar of numbered modules beside a single reading column; labs sit in framed "bench" panels. */
+:root{
+  --paper:#f4f5f9; --panel:#ffffff; --ink:#141a2e; --ink-2:#4a5168; --ink-3:#7a8199; --rule:#d8dce8; --wash:#eaedf5; --accent:#1f3a7a; --accent-ink:#ffffff; --accent-wash:#e1e7f6; --hdr:#16285a; --hdr-ink:#ffffff; --hdr-sub:#f2b84b; --label:#b26b00;
+  --s1:#2a78d6; --s2:#eb6834; --mute:#b9c0bb; --good:#16794a; --bad:#c23b33; --good-wash:#e3f2e9; --bad-wash:#f8e5e3;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0f1424; --panel:#171d31; --ink:#e8ebf4; --ink-2:#b4bbd0; --ink-3:#828aa3; --rule:#2b3350; --wash:#1f2740; --accent:#8fa8ff; --accent-ink:#0d1222; --accent-wash:#222d52; --hdr:#0b1020; --hdr-ink:#ffffff; --hdr-sub:#f2b84b; --label:#f2b84b; --s1:#3987e5; --s2:#d95926; --mute:#4c5753;
+  --good:#5cc68d; --bad:#ef7d74; --good-wash:#1b3326; --bad-wash:#3a2220; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0f1424; --panel:#171d31; --ink:#e8ebf4; --ink-2:#b4bbd0; --ink-3:#828aa3; --rule:#2b3350; --wash:#1f2740; --accent:#8fa8ff; --accent-ink:#0d1222; --accent-wash:#222d52; --hdr:#0b1020; --hdr-ink:#ffffff; --hdr-sub:#f2b84b; --label:#f2b84b; --s1:#3987e5; --s2:#d95926; --mute:#4c5753;
+  --good:#5cc68d; --bad:#ef7d74; --good-wash:#1b3326; --bad-wash:#3a2220; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--panel)}
+a{color:var(--accent)}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:2.3rem;font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.7rem;font-weight:800}
+h3{font-size:1.2rem;font-weight:700}
+p{margin:0}
+:focus-visible{outline:3px solid var(--s1);outline-offset:2px;border-radius:3px}
+.mono{font-family:var(--f-mono);font-size:.85em}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--panel);border-bottom:1px solid var(--rule);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;flex-direction:column;line-height:1.1;text-decoration:none;color:var(--ink);margin-right:auto}
+.brand b{font-family:var(--f-display);font-weight:800;font-size:1.05rem}
+.brand span{font-size:.78rem;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase}
+.progress-pill{font-family:var(--f-mono);font-size:.8rem;background:var(--wash);border-radius:99px;padding:4px 10px;color:var(--ink-2)}
+.menu-btn{display:none}
+
+/* shell */
+.shell{display:grid;grid-template-columns:260px minmax(0,1fr);max-width:1180px;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));gap:40px}
+nav.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 72px);align-self:start;padding-block:28px;max-height:calc(100vh - 80px);overflow:auto}
+nav.side ol{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+nav.side a{display:grid;grid-template-columns:30px 1fr 18px;align-items:center;gap:6px;padding:8px 10px;border-radius:6px;text-decoration:none;color:var(--ink-2);font-size:.95rem;line-height:1.25}
+nav.side a:hover{background:var(--wash);color:var(--ink)}
+nav.side a[aria-current="page"]{background:var(--accent-wash);color:var(--ink);font-weight:600}
+nav.side .num{font-family:var(--f-mono);font-size:.78rem;color:var(--ink-3)}
+nav.side .tick{color:var(--good);font-weight:700;text-align:right}
+nav.side .grp{font-size:.72rem;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);padding:16px 10px 6px}
+main{padding-block:32px 80px;min-width:0}
+section.view{display:grid;gap:22px;max-width:760px}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.series{font-size:.95rem;font-weight:600;color:var(--ink-2);margin-top:-10px}
+.lead{font-size:1.15rem;color:var(--ink-2)}
+.prose{display:grid;gap:14px}
+.prose ul,.prose ol{margin:0;padding-left:1.3em;display:grid;gap:6px}
+
+/* boxes */
+.bench{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:20px;display:grid;gap:14px;min-width:0}
+.bench-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.bench-h .tag{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:2px 7px;border-radius:3px}
+.note{border-left:3px solid var(--accent);padding:4px 0 4px 14px;color:var(--ink-2)}
+.objectives{display:grid;gap:8px;counter-reset:o;padding:0;margin:0;list-style:none}
+.objectives li{counter-increment:o;display:grid;grid-template-columns:28px 1fr;gap:8px}
+.objectives li::before{content:counter(o);font-family:var(--f-mono);font-size:.8rem;width:24px;height:24px;border-radius:50%;background:var(--accent-wash);color:var(--accent);display:grid;place-items:center;margin-top:2px}
+
+/* table */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:8px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--f-display);font-weight:700;font-size:.85rem;background:var(--wash)}
+tr:last-child td{border-bottom:0}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+
+/* home cards */
+.modgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.modcard{display:grid;gap:6px;padding:16px;background:var(--panel);border:1px solid var(--rule);border-radius:10px;text-decoration:none;color:var(--ink)}
+.modcard:hover{border-color:var(--accent)}
+.modcard .num{font-family:var(--f-mono);font-size:.78rem;color:var(--ink-3);display:flex;justify-content:space-between}
+.modcard .num .done{color:var(--good)}
+.modcard p{font-size:.92rem;color:var(--ink-2)}
+.hero{display:grid;gap:16px;padding-block:8px 6px}
+.hero-fig{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:16px}
+
+/* controls */
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button,.btn{font:inherit;font-size:.93rem;border:1px solid var(--rule);background:var(--panel);color:var(--ink);padding:8px 14px;border-radius:7px;cursor:pointer}
+button:hover{border-color:var(--ink-3)}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+button[aria-pressed="true"]{background:var(--accent-wash);border-color:var(--accent);font-weight:600}
+label.chk{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+label.chk input{width:18px;height:18px;margin-top:4px;accent-color:var(--accent);flex:none}
+input[type=range]{width:100%;accent-color:var(--accent)}
+select{font:inherit;font-size:.95rem;padding:7px 10px;border-radius:7px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);max-width:100%}
+.readout{font-family:var(--f-mono);font-size:.85rem;color:var(--ink-2)}
+.fb{padding:10px 14px;border-radius:7px;font-size:.95rem}
+.fb.ok{background:var(--good-wash);color:var(--ink)}
+.fb.no{background:var(--bad-wash);color:var(--ink)}
+.complete-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;border-top:1px solid var(--rule);padding-top:18px}
+
+/* charts */
+svg.chart{width:100%;height:auto;display:block;overflow:visible}
+svg .ax{stroke:var(--rule);stroke-width:1}
+svg .grid{stroke:var(--rule);stroke-width:1;stroke-dasharray:2 3}
+svg text{fill:var(--ink-2);font-family:var(--f-body);font-size:12px}
+svg text.t-strong{fill:var(--ink);font-weight:700}
+svg text.t-title{fill:var(--ink);font-family:var(--f-display);font-weight:700;font-size:14px}
+svg text.t-mute{fill:var(--ink-3);font-size:11px}
+svg .m1{fill:var(--s1)} svg .m2{fill:var(--s2)} svg .mm{fill:var(--mute)}
+svg .l1{stroke:var(--s1);stroke-width:2;fill:none} svg .l2{stroke:var(--s2);stroke-width:2;fill:none}
+svg .ref{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:4 3}
+svg .bar:hover,svg .hit:hover+.bar{opacity:.8}
+.cap{font-size:.85rem;color:var(--ink-3)}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.twocol>*{min-width:0}
+
+/* sorting game */
+.vars{display:grid;gap:8px}
+.var{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--rule);border-radius:8px;background:var(--paper)}
+.var.ok{border-color:var(--good);background:var(--good-wash)}
+.var.no{border-color:var(--bad);background:var(--bad-wash)}
+
+/* quiz */
+.q{display:grid;gap:10px;padding:16px;border:1px solid var(--rule);border-radius:10px;background:var(--panel)}
+.q h4{font-family:var(--f-body);font-weight:700;font-size:1rem}
+.q .opts{display:grid;gap:6px}
+.q .opts button{text-align:left;width:100%}
+.q .opts button.right{border-color:var(--good);background:var(--good-wash)}
+.q .opts button.wrong{border-color:var(--bad);background:var(--bad-wash)}
+.q .why{font-size:.93rem;color:var(--ink-2)}
+.score{font-family:var(--f-display);font-size:1.4rem;font-weight:800}
+
+.dont-list{display:grid;gap:12px}
+.dont{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:16px;display:grid;gap:12px}
+.dont-h{display:flex;gap:14px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.dont-h>div{display:grid;gap:4px;min-width:0;flex:1 1 300px}
+.dont-h p{font-size:.95rem;color:var(--ink-2)}
+.show-ex{flex:none}
+.dont-ex{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dont-ex figure{margin:0;padding:10px;border-radius:8px;display:grid;gap:6px;min-width:0}
+.dont-ex .bad{background:var(--bad-wash)} .dont-ex .good{background:var(--good-wash)}
+.dont-ex figcaption{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+.dont-ex .bad figcaption{color:var(--bad)} .dont-ex .good figcaption{color:var(--good)}
+@media (max-width:620px){.dont-ex{grid-template-columns:1fr}}
+/*scheme-css*/
+.top{background:var(--hdr);border-bottom:3px solid var(--hdr-sub)}
+body::before{background:var(--hdr)}
+.brand,.brand b{color:var(--hdr-ink)}
+.brand span{color:var(--hdr-sub)}
+.top .progress-pill{background:rgba(255,255,255,.14);color:var(--hdr-ink)}
+.top .menu-btn{background:transparent;color:var(--hdr-ink);border-color:rgba(255,255,255,.4)}
+.eyebrow{color:var(--label)}
+.bench-h .tag{background:var(--accent);color:var(--accent-ink)}
+.objectives li::before{background:var(--accent);color:var(--accent-ink)}
+/* checklist */
+.check-list{display:grid;gap:8px}
+.meter{height:10px;background:var(--wash);border-radius:99px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--accent);width:0;transition:width .2s}
+dl.gloss{display:grid;grid-template-columns:200px 1fr;gap:10px 18px;margin:0}
+dl.gloss dt{font-weight:700}
+dl.gloss dd{margin:0;color:var(--ink-2)}
+ol.refs{display:grid;gap:8px;padding-left:1.6em;font-size:.93rem;color:var(--ink-2)}
+
+@media (max-width:860px){
+  .shell{grid-template-columns:1fr;gap:0}
+  nav.side{position:static;max-height:none;padding-block:0}
+  nav.side[data-open="false"]{display:none}
+  .menu-btn{display:inline-block}
+  .twocol{grid-template-columns:1fr}
+  dl.gloss{grid-template-columns:1fr;gap:2px}
+  dl.gloss dd{margin-bottom:10px}
+  h1{font-size:1.85rem}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <a class="brand" href="#home"><b>Charts That Guide Action</b><span>Azmi Noteworthy Series</span></a>
+  <span class="progress-pill" id="pp">0 of 7 modules done</span>
+  <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="sideNav">Menu</button>
+</header>
+
+<div class="shell">
+<nav class="side" id="sideNav" data-open="false" aria-label="Modules">
+  <ol id="navList"></ol>
+</nav>
+
+<main id="main">
+
+<!-- HOME -->
+<section class="view" data-route="home">
+  <div class="hero">
+    <div class="eyebrow">Azmi Noteworthy Series</div>
+    <p class="series">For the Advanced Diploma in Applied Epidemiology in Disease Control and Outbreak Management</p>
+    <h1>Data visualisation and graphical presentation</h1>
+    <p class="lead">Learn to turn surveillance and outbreak data into charts that help people act. Read each short module, play with the labs, then test yourself.</p>
+    <div class="hero-fig">
+      <svg class="chart" id="heroChart" viewBox="0 0 640 220" role="img" aria-label="Example epidemic curve: cases of food poisoning by 6-hour onset interval, showing one sharp peak typical of a point-source outbreak"></svg>
+      <p class="cap">An epidemic curve answers "is this outbreak growing?" at a glance. You will build one in Module 4. (Illustrative data.)</p>
+    </div>
+  </div>
+  <h2>By the end you can</h2>
+  <ol class="objectives">
+    <li>Explain why we visualise public health data.</li>
+    <li>Match a type of data to a suitable chart.</li>
+    <li>Spot good and bad practice in real charts.</li>
+    <li>Choose a tool to make a chart, table, map or dashboard.</li>
+  </ol>
+  <h2>Modules</h2>
+  <div class="modgrid" id="modGrid"></div>
+  <p class="cap">Based on the ADED lecture "Data Visualisation and Graphical Presentation" (Dr Sahrol Azmi Termizi, EIP Malaysia, 28 Nov 2025) and the companion lecture notes. Charts marked "illustrative" use made-up numbers for teaching.</p>
+</section>
+
+<!-- M1 -->
+<section class="view" data-route="m1" hidden>
+  <div class="eyebrow">Module 1</div>
+  <h1>Why we visualise data</h1>
+  <p class="lead">Data visualisation means showing numbers as pictures, such as charts, graphs, maps and tables, so people understand them quickly.</p>
+  <div class="prose">
+    <p>A good chart cuts the "time to insight". The reader sees a trend, a cluster or an outlier in seconds instead of reading a long line list.</p>
+    <p>In public health, charts are not decoration. They guide action. An epidemic curve tells us if an outbreak is growing. A map tells us where to send a team. A clear chart can help a decision maker act early, and a bad chart can lead them to the wrong decision.</p>
+  </div>
+  <div class="bench">
+    <div class="bench-h"><span class="tag">Lab</span><h3>Table or chart: which is faster?</h3></div>
+    <p>Here are weekly dengue cases for one district. When did cases start rising sharply? Try the table first, then press the button.</p>
+    <div class="tbl-wrap"><table id="m1tbl"></table></div>
+    <div class="row"><button class="primary" id="m1show">Show as a chart</button></div>
+    <div id="m1chartWrap" hidden><svg class="chart" id="m1chart" viewBox="0 0 640 220" role="img" aria-label="Line chart of weekly dengue cases, rising sharply from week 9"></svg>
+    <p class="cap">Illustrative data. The rise from week 9 jumps out from the chart.</p></div>
+  </div>
+  <h2>Two big reasons</h2>
+  <div class="twocol">
+    <div class="bench"><h3>Explore</h3><p>Quick charts for yourself, to understand the data, check for errors and find what is interesting. They do not need to be pretty.</p></div>
+    <div class="bench"><h3>Explain</h3><p>A polished chart that tells one clear story to a specific audience. Most charts in reports and slides are this type.</p></div>
+  </div>
+  <h2>Five jobs a chart does</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Purpose</th><th>Public health example</th></tr>
+    <tr><td>Identify patterns</td><td>A sudden spike in daily dengue cases, or a cluster of cases in one locality</td></tr>
+    <tr><td>Communicate complex information</td><td>An infographic on measles vaccination coverage for parents</td></tr>
+    <tr><td>Support decisions</td><td>A district map that shows where to target fogging or vaccination</td></tr>
+    <tr><td>Monitor progress</td><td>Weekly TB treatment success rate against the national target</td></tr>
+    <tr><td>Keep a historical record</td><td>The full epidemic curve of an outbreak in the final report</td></tr>
+  </table></div>
+  <h2>Before you draw, ask four questions</h2>
+  <ol class="objectives">
+    <li><b>Who is my audience?</b> An epidemiologist, a director, or the public?</li>
+    <li><b>What do I want them to know or do?</b></li>
+    <li><b>How will I show it?</b> A number, a table, a chart, a map, or text?</li>
+    <li><b>What data do I have to support the message?</b></li>
+  </ol>
+  <div class="quiz" data-quiz="m1"></div>
+  <div class="complete-row" data-complete="m1"></div>
+</section>
+
+<!-- M2 -->
+<section class="view" data-route="m2" hidden>
+  <div class="eyebrow">Module 2</div>
+  <h1>Know your data type first</h1>
+  <p class="lead">The type of data decides the type of chart. So the first step is always to ask: "What kind of variable am I showing?"</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Data type</th><th>What it is</th><th>Examples</th><th>Usually shown with</th></tr>
+    <tr><td>Nominal</td><td>Groups with no order</td><td>State, sex, type of pathogen</td><td>Bar chart, table</td></tr>
+    <tr><td>Ordinal</td><td>Groups with a natural order</td><td>Age group, severity (mild, moderate, severe)</td><td>Bar chart in the natural order</td></tr>
+    <tr><td>Discrete numerical</td><td>Counts in whole numbers</td><td>Number of cases, admissions</td><td>Bar chart, histogram, epi curve</td></tr>
+    <tr><td>Continuous numerical</td><td>Measurements on a scale</td><td>Age in years, BMI, incubation period</td><td>Histogram, box plot, scatter plot</td></tr>
+    <tr><td>Time</td><td>Values at regular time points</td><td>Daily cases, epi week</td><td>Line graph, epi curve</td></tr>
+    <tr><td>Geographic</td><td>Values linked to a place</td><td>Incidence rate by district</td><td>Choropleth map, dot map</td></tr>
+    <tr><td>Part of a whole</td><td>Shares that add up to 100%</td><td>Cases by serotype</td><td>Bar, stacked bar, waffle chart</td></tr>
+    <tr><td>Relationship</td><td>Two measures on the same unit</td><td>Vaccination coverage vs incidence by district</td><td>Scatter plot</td></tr>
+  </table></div>
+  <p class="note">Simple tip: if you can put the values in alphabetical order without losing meaning, the data is nominal. If the order matters, like age groups, keep that order in the chart.</p>
+  <div class="bench">
+    <div class="bench-h"><span class="tag">Lab</span><h3>Sort the variables</h3></div>
+    <p>These variables come from a dengue line list. Pick the data type for each one.</p>
+    <div class="vars" id="varGame"></div>
+    <div class="row"><button class="primary" id="varCheck">Check my answers</button><button id="varReset">Start again</button><span class="readout" id="varScore"></span></div>
+  </div>
+  <div class="quiz" data-quiz="m2"></div>
+  <div class="complete-row" data-complete="m2"></div>
+</section>
+
+<!-- M3 -->
+<section class="view" data-route="m3" hidden>
+  <div class="eyebrow">Module 3</div>
+  <h1>Choosing the right chart</h1>
+  <p class="lead">Use a four-step strategy: find the type of data, decide the purpose, know the audience, then pick the chart.</p>
+  <div class="bench">
+    <div class="bench-h"><span class="tag">Tool</span><h3>Chart picker</h3></div>
+    <div class="row">
+      <label for="cpPurpose">I want to show</label>
+      <select id="cpPurpose">
+        <option value="compare">a comparison between groups</option>
+        <option value="trend">a trend over time</option>
+        <option value="outbreak">new cases in an outbreak</option>
+        <option value="dist">how one measure is spread</option>
+        <option value="rel">a link between two measures</option>
+        <option value="place">where cases are</option>
+        <option value="share">parts of a whole</option>
+        <option value="one">one key number</option>
+        <option value="lookup">exact values to look up</option>
+      </select>
+    </div>
+    <div id="cpOut" class="twocol"></div>
+  </div>
+  <h2>Displays at a glance</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Display</th><th>Best for</th><th>Watch out</th></tr>
+    <tr><td>Big number</td><td>One or two key numbers</td><td>You lose context</td></tr>
+    <tr><td>Table</td><td>Looking up exact values</td><td>Poor on live slides; right-align numbers</td></tr>
+    <tr><td>Heat map</td><td>High and low values in a big table</td><td>One colour scale, with a legend</td></tr>
+    <tr><td>Bar chart</td><td>Comparing groups</td><td>Start at zero; sort by value; horizontal for long names</td></tr>
+    <tr><td>Grouped bar</td><td>Two or three sub-groups</td><td>Too many series is hard to read</td></tr>
+    <tr><td>Stacked bar</td><td>Totals plus their parts</td><td>Only the bottom segment is easy to compare</td></tr>
+    <tr><td>Line graph</td><td>Trends over continuous time</td><td>Never join unrelated groups with a line</td></tr>
+    <tr><td>Slope graph</td><td>Change between two time points</td><td>Fewer than about 15 lines</td></tr>
+    <tr><td>Histogram</td><td>Shape and spread of one continuous measure</td><td>Bin width can change the picture</td></tr>
+    <tr><td>Epidemic curve</td><td>New cases by onset time</td><td>Histogram, not a line; interval about ¼ to ⅓ of the incubation period</td></tr>
+    <tr><td>Box plot</td><td>Comparing distributions across groups</td><td>Explain the box to a lay audience</td></tr>
+    <tr><td>Scatter plot</td><td>Relationship between two measures</td><td>Correlation is not causation</td></tr>
+    <tr><td>Choropleth map</td><td>Rates by area</td><td>Map rates, not counts; big areas look more important</td></tr>
+    <tr><td>Dot (spot) map</td><td>Location of each case</td><td>Protect privacy</td></tr>
+    <tr><td>Waffle chart</td><td>A simple share or progress to target</td><td>Good alternative to a pie</td></tr>
+    <tr><td>Pie / donut</td><td>Parts of a whole, 2 to 3 slices only</td><td>Never 3D; a bar is usually better</td></tr>
+  </table></div>
+  <p>Want more ideas? Try the <a href="https://datavizproject.com" target="_blank" rel="noopener">Data Viz Project</a> and <a href="https://www.data-to-viz.com" target="_blank" rel="noopener">From Data to Viz</a>. Both let you start from your data type.</p>
+  <div class="quiz" data-quiz="m3"></div>
+  <div class="complete-row" data-complete="m3"></div>
+</section>
+
+<!-- M4 -->
+<section class="view" data-route="m4" hidden>
+  <div class="eyebrow">Module 4</div>
+  <h1>The epidemic curve</h1>
+  <p class="lead">The epi curve is the most important chart in outbreak work. It is a histogram of cases by date or time of onset.</p>
+  <div class="prose">
+    <p>From its shape, the team can guess how the disease is spreading:</p>
+    <ul>
+      <li><b>Point source:</b> one sharp peak. Everyone was exposed at one time, such as one meal.</li>
+      <li><b>Continuous common source:</b> a plateau. People keep being exposed, such as a leaking water pipe.</li>
+      <li><b>Person-to-person:</b> waves of growing peaks, about one incubation period apart.</li>
+    </ul>
+  </div>
+  <div class="bench">
+    <div class="bench-h"><span class="tag">Lab</span><h3>Pick the right time interval</h3></div>
+    <p>62 students fell ill after a school lunch at 12:00 on Monday. The suspected pathogen is <i>Salmonella</i>, with a typical incubation period of about 24 hours. Move the slider and watch the picture change.</p>
+    <div>
+      <label for="binSlider">Interval width: <b id="binLbl">6 hours</b></label>
+      <input type="range" id="binSlider" min="0" max="6" value="3" step="1">
+    </div>
+    <div class="row"><button id="lineToggle" aria-pressed="false">Draw as a line instead</button></div>
+    <svg class="chart" id="epiChart" viewBox="0 0 640 260" role="img" aria-label="Epidemic curve of cases by onset time"></svg>
+    <div class="fb" id="binFb"></div>
+  </div>
+  <p class="note">Rule of thumb: choose an interval about one quarter to one third of the average incubation period. For a 24-hour incubation, that is 6 to 8 hours.</p>
+  <div class="bench">
+    <div class="bench-h"><span class="tag">Lab</span><h3>Read the shape</h3></div>
+    <p>Which spread pattern does each curve show?</p>
+    <div class="twocol" id="shapeGame"></div>
+  </div>
+  <div class="quiz" data-quiz="m4"></div>
+  <div class="complete-row" data-complete="m4"></div>
+</section>
+
+<!-- M5 -->
+<section class="view" data-route="m5" hidden>
+  <div class="eyebrow">Module 5</div>
+  <h1>Good practice: the "Do" list</h1>
+  <p class="lead">A good chart shows one clear message, is honest about the data, and makes sense without the speaker.</p>
+  <div class="bench">
+    <div class="bench-h"><span class="tag">Lab</span><h3>Fix this chart, one step at a time</h3></div>
+    <p>A colleague sends you this chart of disease XYZ by state. Turn on each fix and watch the message appear.</p>
+    <div class="check-list" id="fixes"></div>
+    <svg class="chart" id="fixChart" viewBox="0 0 640 400" role="img" aria-label="Bar chart of disease XYZ by state"></svg>
+    <p class="cap">Illustrative data for teaching. Rates are per 100,000 population.</p>
+  </div>
+  <h2>The Do list</h2>
+  <div class="prose"><ul>
+    <li><b>Know your audience.</b> Experts can read a box plot. The public needs a simple bar chart or infographic with plain words.</li>
+    <li><b>Choose the right chart.</b> Bar for comparison, line for trend, map for place, histogram for distribution.</li>
+    <li><b>Make it clear.</b> A full title with what, where and when. Label both axes with units. Add the data source and date.</li>
+    <li><b>Give context.</b> Show rates when you compare places of different size. Add a target, baseline or national average.</li>
+    <li><b>Put the message in the title.</b> "Cases fell by 40% after week 32" tells the reader what to see.</li>
+    <li><b>Highlight what matters.</b> One strong colour for the key bar, grey for the rest. The eye notices colour, size and position before it reads.</li>
+    <li><b>Label directly.</b> Put labels next to lines or bars so the eye does not jump to a legend.</li>
+    <li><b>Keep text readable.</b> One sans-serif font, no ALL CAPS, no diagonal text, 18 points or more on slides.</li>
+    <li><b>Use colour carefully.</b> Few colours, no neon. Use colour-blind-friendly pairs such as blue and orange instead of red and green.</li>
+    <li><b>Be ethical.</b> No names or home locations on spot maps. Never label an outbreak by an ethnic or religious group.</li>
+  </ul></div>
+  <h2>Real examples of good practice</h2>
+  <div class="prose">
+    <p><b>John Snow's cholera map, London, 1854.</b> Snow marked each cholera death on a street map. The deaths clustered around the Broad Street water pump. The map helped convince officials to remove the pump handle.</p>
+    <p><b>Sorted bar chart of rates by state.</b> The course slides show XYZ rates by state in Malaysia, 2024, sorted from highest (Pahang, 6.23 per 100,000) to lowest (Johor, 0.10), with the national rate (0.56) shown as its own bar.</p>
+    <p><b>Table to heat map (DDC Thailand).</b> A plain table of dengue case characteristics was improved by removing heavy borders, aligning numbers to the right and adding colour shading.</p>
+  </div>
+  <div class="quiz" data-quiz="m5"></div>
+  <div class="complete-row" data-complete="m5"></div>
+</section>
+
+<!-- M6 -->
+<section class="view" data-route="m6" hidden>
+  <div class="eyebrow">Module 6</div>
+  <h1>Bad practice: how charts mislead</h1>
+  <p class="lead">Most bad charts are not lies. They are honest data drawn in a way that tricks the eye. The reader trusts the picture, so the picture must be right.</p>
+
+  <div class="bench">
+    <div class="bench-h"><span class="tag">Lab 1</span><h3>The cut axis</h3></div>
+    <p>Measles vaccination coverage in two districts. Move the start of the y-axis up from zero.</p>
+    <label for="truncSlider">Y-axis starts at <b id="truncLbl">0%</b></label>
+    <input type="range" id="truncSlider" min="0" max="86" value="0" step="2">
+    <svg class="chart" id="truncChart" viewBox="0 0 640 240" role="img" aria-label="Two bars: District A 88 percent, District B 93 percent"></svg>
+    <div class="fb" id="truncFb"></div>
+  </div>
+
+  <div class="bench">
+    <div class="bench-h"><span class="tag">Lab 2</span><h3>Time out of order</h3></div>
+    <p>In May 2020, a US state health department posted a chart of new COVID-19 cases that seemed to show a steady fall. The bars were sorted from high to low, so the dates were out of order. This chart recreates the idea with illustrative numbers.</p>
+    <div class="row"><button id="orderToggle" aria-pressed="false">Put dates in time order</button></div>
+    <svg class="chart" id="orderChart" viewBox="0 0 640 240" role="img" aria-label="Daily cases chart"></svg>
+    <div class="fb" id="orderFb"></div>
+  </div>
+
+  <div class="bench">
+    <div class="bench-h"><span class="tag">Lab 3</span><h3>Upside-down axis</h3></div>
+    <p>A 2014 news chart on firearm deaths in Florida flipped the y-axis so zero was at the top. When deaths went up, the line went down.</p>
+    <div class="row"><button id="flipToggle" aria-pressed="true">Flipped axis (as published)</button></div>
+    <svg class="chart" id="flipChart" viewBox="0 0 640 240" role="img" aria-label="Line chart of yearly deaths"></svg>
+    <p class="cap">Illustrative numbers that follow the shape of the original chart.</p>
+  </div>
+
+  <div class="bench">
+    <div class="bench-h"><span class="tag">Lab 4</span><h3>Pie or bar?</h3></div>
+    <p>Dengue cases by serotype. Using the pie only, which is bigger: DENV-2 or DENV-3?</p>
+    <div class="twocol">
+      <svg class="chart" id="pieChart" viewBox="0 0 300 260" role="img" aria-label="Pie chart of five serotype shares"></svg>
+      <div id="pieBarWrap" hidden><svg class="chart" id="pieBar" viewBox="0 0 300 260" role="img" aria-label="Bar chart of the same five serotype shares"></svg></div>
+    </div>
+    <div class="row"><button data-pie="2">DENV-2</button><button data-pie="3">DENV-3</button><button data-pie="same">They look the same</button></div>
+    <div class="fb" id="pieFb" hidden></div>
+  </div>
+
+  <h2>The Don't list</h2>
+  <p>Press "Show example" to see each mistake next to a better version.</p>
+  <div id="dontList" class="dont-list"></div>
+  <div class="quiz" data-quiz="m6"></div>
+  <div class="complete-row" data-complete="m6"></div>
+</section>
+
+<!-- M7 -->
+<section class="view" data-route="m7" hidden>
+  <div class="eyebrow">Module 7</div>
+  <h1>Tools and ways to present</h1>
+  <p class="lead">The best tool is the one your team can use well and repeat every week. Start simple, and move to code or dashboards when you need speed, repeatability or interactivity.</p>
+  <div class="row" id="toolFilter" role="group" aria-label="Filter tools by skill level">
+    <button aria-pressed="true" data-lvl="all">All</button>
+    <button aria-pressed="false" data-lvl="Beginner">Beginner</button>
+    <button aria-pressed="false" data-lvl="Intermediate">Intermediate</button>
+    <button aria-pressed="false" data-lvl="Advanced">Advanced</button>
+  </div>
+  <div class="tbl-wrap"><table id="toolTbl"></table></div>
+  <h2>Ways to present</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Modality</th><th>Use it for</th><th>Key rule</th></tr>
+    <tr><td>Static charts</td><td>Reports, articles, situation reports</td><td>Must make sense without a speaker</td></tr>
+    <tr><td>Slides</td><td>Briefings</td><td>One message per slide, large text</td></tr>
+    <tr><td>Infographics and posters</td><td>The public and social media</td><td>Plain words, icons, one or two big numbers</td></tr>
+    <tr><td>Interactive dashboards</td><td>Daily monitoring (for example, Malaysia's COVIDNOW)</td><td>Let users pick time and place</td></tr>
+    <tr><td>Maps</td><td>Field teams and planning</td><td>Rates, not counts; protect privacy</td></tr>
+    <tr><td>Animated charts</td><td>Change over time</td><td>Keep it short; give a pause button</td></tr>
+  </table></div>
+  <p class="note">Whatever the tool, the rules still apply. A beautiful dashboard with a cut axis is still misleading.</p>
+  <div class="quiz" data-quiz="m7"></div>
+  <div class="complete-row" data-complete="m7"></div>
+</section>
+
+<!-- CHECKLIST -->
+<section class="view" data-route="checklist" hidden>
+  <div class="eyebrow">Practice</div>
+  <h1>Chart checklist</h1>
+  <p class="lead">Use this before you share any chart. Tick each item your chart passes.</p>
+  <div class="bench">
+    <div class="check-list" id="ckList"></div>
+    <div class="meter" aria-hidden="true"><i id="ckMeter"></i></div>
+    <div class="row"><span class="readout" id="ckScore"></span><button id="ckReset">Clear ticks</button></div>
+  </div>
+  <div class="bench">
+    <div class="bench-h"><span class="tag">Activity</span><h3>Before and after (20 minutes)</h3></div>
+    <div class="prose"><ol>
+      <li>Take a chart from a recent situation report or news article.</li>
+      <li>Score it with the checklist above.</li>
+      <li>Redraw it on paper or in Excel.</li>
+      <li>Present the "before" and "after" in two minutes.</li>
+    </ol></div>
+  </div>
+  <p class="note"><b>Key message:</b> know your data, know your audience, pick the simplest chart that answers the question, and draw it honestly.</p>
+</section>
+
+<!-- FINAL QUIZ -->
+<section class="view" data-route="test" hidden>
+  <div class="eyebrow">Self-test</div>
+  <h1>Final self-test</h1>
+  <p class="lead">Ten questions drawn from all the modules. You get feedback after each answer.</p>
+  <div class="row"><button class="primary" id="ftStart">Start a new test</button><span class="readout" id="ftBest"></span></div>
+  <div id="ftBox" style="display:grid;gap:12px"></div>
+</section>
+
+<!-- GLOSSARY -->
+<section class="view" data-route="glossary" hidden>
+  <div class="eyebrow">Reference</div>
+  <h1>Glossary</h1>
+  <dl class="gloss" id="glossList"></dl>
+</section>
+
+<!-- REFS -->
+<section class="view" data-route="references" hidden>
+  <div class="eyebrow">Reference</div>
+  <h1>References and further reading</h1>
+  <ol class="refs">
+    <li>Termizi SA. Data Visualisation and Graphical Presentation [lecture slides]. ADED, EIP Malaysia; 28 Nov 2025.</li>
+    <li>Data Visualization [lecture slides]. Includes material from S. Wongsanuphat (DDC Thailand) and P. Krumm (US CDC).</li>
+    <li>CDC. Principles of Epidemiology in Public Health Practice, 3rd ed. Lesson 4: Displaying Public Health Data. Atlanta: CDC; 2012. <a href="https://archive.cdc.gov/www_cdc_gov/csels/dsepd/ss1978/lesson4/index.html" target="_blank" rel="noopener">Link</a></li>
+    <li>Tufte ER. The Visual Display of Quantitative Information. 2nd ed. Graphics Press; 2001.</li>
+    <li>Knaflic CN. Storytelling with Data. Wiley; 2015.</li>
+    <li>Few S. Show Me the Numbers. 2nd ed. Analytics Press; 2012.</li>
+    <li>Wilke CO. Fundamentals of Data Visualization. O'Reilly; 2019. <a href="https://clauswilke.com/dataviz/" target="_blank" rel="noopener">Free online</a></li>
+    <li>Cairo A. How Charts Lie. W. W. Norton; 2019.</li>
+    <li>Cleveland WS, McGill R. Graphical perception. J Am Stat Assoc. 1984;79(387):531–554.</li>
+    <li>Rougier NP, Droettboom M, Bourne PE. Ten simple rules for better figures. PLoS Comput Biol. 2014;10(9):e1003833.</li>
+    <li>Snow J. On the Mode of Communication of Cholera. 2nd ed. London: John Churchill; 1855.</li>
+    <li>Queram KE. Officials apologize, retool coronavirus chart after backlash. Route Fifty; 18 May 2020.</li>
+    <li>Wade L. How to mislead with charts: Stand Your Ground laws and gun deaths in Florida. Pacific Standard; 21 Apr 2014.</li>
+    <li>Ferdio. Data Viz Project. <a href="https://datavizproject.com" target="_blank" rel="noopener">datavizproject.com</a></li>
+    <li>Holtz Y, Healy C. From Data to Viz. <a href="https://www.data-to-viz.com" target="_blank" rel="noopener">data-to-viz.com</a></li>
+    <li>Harvard University IT. Data visualizations, charts, and graphs. Digital Accessibility.</li>
+    <li>Schwabish J. Avoiding the dual-axis chart. PolicyViz; 6 Oct 2022.</li>
+  </ol>
+</section>
+
+</main>
+</div>
+
+<script>
+(function(){
+"use strict";
+var store={get:function(k,d){try{var v=localStorage.getItem("aded-dv-"+k);return v?JSON.parse(v):d}catch(e){return d}},
+           set:function(k,v){try{localStorage.setItem("aded-dv-"+k,JSON.stringify(v))}catch(e){}}};
+var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+
+/* ---------- modules & nav ---------- */
+var MODS=[
+ {id:"m1",t:"Why we visualise data",d:"Explore vs explain, and the five jobs a chart does."},
+ {id:"m2",t:"Know your data type",d:"Nominal, ordinal, numerical, time, place."},
+ {id:"m3",t:"Choosing the right chart",d:"A chart picker for common public health questions."},
+ {id:"m4",t:"The epidemic curve",d:"Intervals, shapes and what they tell you."},
+ {id:"m5",t:"Good practice",d:"Fix a messy chart, step by step."},
+ {id:"m6",t:"How charts mislead",d:"Cut axes, shuffled dates, flipped axes, pies."},
+ {id:"m7",t:"Tools and ways to present",d:"From Excel to R, QGIS and dashboards."}
+];
+var EXTRA=[{id:"checklist",t:"Chart checklist"},{id:"test",t:"Final self-test"},{id:"glossary",t:"Glossary"},{id:"references",t:"References"}];
+var done=store.get("done",{});
+function renderNav(){
+  var h='<li><a href="#home" data-r="home"><span class="num">00</span><span>Start here</span><span></span></a></li><li class="grp">Modules</li>';
+  MODS.forEach(function(m,i){h+='<li><a href="#'+m.id+'" data-r="'+m.id+'"><span class="num">0'+(i+1)+'</span><span>'+m.t+'</span><span class="tick">'+(done[m.id]?"✓":"")+'</span></a></li>'});
+  h+='<li class="grp">Practice and reference</li>';
+  EXTRA.forEach(function(m){h+='<li><a href="#'+m.id+'" data-r="'+m.id+'"><span class="num">·</span><span>'+m.t+'</span><span></span></a></li>'});
+  $("#navList").innerHTML=h;
+  var g="";MODS.forEach(function(m,i){g+='<a class="modcard" href="#'+m.id+'"><span class="num"><span>MODULE '+(i+1)+'</span><span class="done">'+(done[m.id]?"✓ Done":"")+'</span></span><h3>'+m.t+'</h3><p>'+m.d+'</p></a>'});
+  $("#modGrid").innerHTML=g;
+  var n=MODS.filter(function(m){return done[m.id]}).length;
+  $("#pp").textContent=n+" of 7 modules done";
+  $$("[data-complete]").forEach(function(el){
+    var id=el.getAttribute("data-complete"),i=MODS.findIndex(function(m){return m.id===id}),nx=MODS[i+1];
+    el.innerHTML='<button id="done-'+id+'" class="'+(done[id]?"":"primary")+'" aria-pressed="'+(done[id]?"true":"false")+'">'+(done[id]?"✓ Marked as done":"Mark this module as done")+'</button>'+
+      (nx?'<a href="#'+nx.id+'">Next: '+nx.t+' →</a>':'<a href="#checklist">Next: Chart checklist →</a>');
+    $("button",el).onclick=function(){done[id]=!done[id];store.set("done",done);renderNav();route()};
+  });
+}
+function route(){
+  var r=(location.hash||"#home").slice(1);
+  if(!$('[data-route="'+r+'"]'))r="home";
+  $$("section.view").forEach(function(s){s.hidden=s.getAttribute("data-route")!==r});
+  $$("nav.side a").forEach(function(a){if(a.getAttribute("data-r")===r)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  $("#sideNav").setAttribute("data-open","false");$("#menuBtn").setAttribute("aria-expanded","false");
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+$("#menuBtn").onclick=function(){var o=$("#sideNav").getAttribute("data-open")==="true";$("#sideNav").setAttribute("data-open",o?"false":"true");this.setAttribute("aria-expanded",o?"false":"true")};
+
+/* ---------- chart helpers ---------- */
+function nice(max){var p=Math.pow(10,Math.floor(Math.log10(max))),f=max/p;var s=f<=1?1:f<=2?2:f<=5?5:10;return s*p}
+function ticks(max,n){var step=nice(max/n),t=[];for(var v=0;v<=max+1e-9;v+=step)t.push(+v.toFixed(6));if(t[t.length-1]<max)t.push(+(t[t.length-1]+step).toFixed(6));return t}
+function rbar(x,y,w,h,cls,tip){ // vertical bar, rounded top 4px
+  if(h<=0)return "";var r=Math.min(4,w/2,h);
+  return '<path class="bar '+cls+'" d="M'+x+','+(y+h)+'V'+(y+r)+'Q'+x+','+y+' '+(x+r)+','+y+'H'+(x+w-r)+'Q'+(x+w)+','+y+' '+(x+w)+','+(y+r)+'V'+(y+h)+'Z">'+(tip?'<title>'+esc(tip)+'</title>':'')+'</path>';
+}
+function hbar(x,y,w,h,cls,tip){
+  if(w<=0)return "";var r=Math.min(4,h/2,w);
+  return '<path class="bar '+cls+'" d="M'+x+','+y+'H'+(x+w-r)+'Q'+(x+w)+','+y+' '+(x+w)+','+(y+r)+'V'+(y+h-r)+'Q'+(x+w)+','+(y+h)+' '+(x+w-r)+','+(y+h)+'H'+x+'Z">'+(tip?'<title>'+esc(tip)+'</title>':'')+'</path>';
+}
+function columns(o){ // o: svg, labels, values, W,H, ymin,ymax, cls(i), title, unit, line
+  var W=o.W||640,H=o.H||220,L=48,R=12,T=(o.title?30:12)+(o.ylab?16:0),B=36,pw=W-L-R,ph=H-T-B;
+  var ymin=o.ymin||0,ymax=o.ymax||nice(Math.max.apply(null,o.values)*1.1);
+  var tk=o.ticks||ticks(ymax,4).filter(function(v){return v>=ymin&&v<=ymax});
+  var y=function(v){return T+ph-(v-ymin)/(ymax-ymin)*ph};
+  var s=o.title?'<text class="t-title" x="0" y="16">'+esc(o.title)+'</text>':"";
+  tk.forEach(function(v){s+='<line class="grid" x1="'+L+'" x2="'+(W-R)+'" y1="'+y(v)+'" y2="'+y(v)+'"/><text x="'+(L-8)+'" y="'+(y(v)+4)+'" text-anchor="end">'+(o.fmt?o.fmt(v):v)+'</text>'});
+  var n=o.values.length,slot=pw/n,gap=o.gap==null?Math.max(2,slot*.18):o.gap,bw=slot-gap;
+  if(o.line){
+    var d="";o.values.forEach(function(v,i){d+=(i?"L":"M")+(L+slot*i+slot/2)+","+y(v)});
+    s+='<path class="l1" d="'+d+'"/>';
+    o.values.forEach(function(v,i){s+='<circle cx="'+(L+slot*i+slot/2)+'" cy="'+y(v)+'" r="3.5" class="m1"><title>'+esc(o.labels[i]+": "+v)+'</title></circle>'});
+  } else {
+    o.values.forEach(function(v,i){var top=y(Math.max(v,ymin));s+=rbar(L+slot*i+gap/2,top,bw,y(ymin)-top,o.cls?o.cls(i):"m1",o.labels[i]+": "+v+(o.unit||""))});
+  }
+  s+='<line class="ax" x1="'+L+'" x2="'+(W-R)+'" y1="'+y(ymin)+'" y2="'+y(ymin)+'"/>';
+  var every=o.every||Math.ceil(n/14);
+  o.labels.forEach(function(l,i){if(i%every===0)s+='<text x="'+(L+slot*i+slot/2)+'" y="'+(T+ph+16)+'" text-anchor="middle">'+esc(l)+'</text>'});
+  if(o.xlab)s+='<text class="t-mute" x="'+(L+pw/2)+'" y="'+(H-2)+'" text-anchor="middle">'+esc(o.xlab)+'</text>';
+  if(o.ylab)s+='<text class="t-mute" x="'+L+'" y="'+(T-4)+'" text-anchor="start">'+esc(o.ylab)+'</text>';
+  o.svg.innerHTML=s;
+}
+
+/* seeded random */
+function rng(seed){return function(){seed=(seed*1664525+1013904223)%4294967296;return seed/4294967296}}
+function lognorm(r,med,sd){var u=r(),v=r();var z=Math.sqrt(-2*Math.log(u||1e-9))*Math.cos(2*Math.PI*v);return med*Math.exp(sd*z)}
+
+/* onset data: 62 cases, hours after meal */
+var R=rng(7),onset=[];for(var i=0;i<62;i++){var h=lognorm(R,24,.35);onset.push(Math.min(70,Math.max(6,h)))}
+function epi(svg,bin,asLine,H,title){
+  var start=0,end=72,n=Math.ceil((end-start)/bin),cnt=new Array(n).fill(0);
+  onset.forEach(function(h){cnt[Math.min(n-1,Math.floor((h-start)/bin))]++});
+  var labels=[];for(var k=0;k<n;k++){var hr=12+k*bin,day=["Mon","Tue","Wed","Thu"][Math.floor(hr/24)],hh=hr%24;labels.push(bin>=24?day:(hh===0?day+" 00":(hh<10?"0":"")+hh))}
+  columns({svg:svg,labels:labels,values:cnt,H:H||260,gap:asLine?0:Math.min(2,640/n*.1),line:asLine,every:Math.max(1,Math.ceil(n/12)),xlab:"Onset time (meal served Mon 12:00)",ylab:"Number of cases",title:title,unit:" cases"});
+}
+epi($("#heroChart"),6,false,220,"Food poisoning cases by onset, school lunch, Monday 12:00");
+
+/* ---------- M1 ---------- */
+var wk=[4,6,5,7,6,8,7,9,15,24,38,51,47];
+(function(){var h='<tr><th>Epi week</th>';wk.forEach(function(v,i){h+='<th class="num">'+(i+1)+'</th>'});h+='</tr><tr><td>Cases</td>';wk.forEach(function(v){h+='<td class="num">'+v+'</td>'});$("#m1tbl").innerHTML=h+'</tr>'})();
+$("#m1show").onclick=function(){$("#m1chartWrap").hidden=false;this.disabled=true;
+  columns({svg:$("#m1chart"),labels:wk.map(function(v,i){return "W"+(i+1)}),values:wk,line:true,ylab:"Cases per week",xlab:"Epidemiological week"})};
+
+/* ---------- M2 sort game ---------- */
+var TYPES=["Nominal","Ordinal","Discrete","Continuous","Time","Geographic"];
+var VARS=[["Sex of patient","Nominal"],["Age group (0–4, 5–14, 15–64, 65+)","Ordinal"],["Number of household contacts","Discrete"],["Body temperature (°C)","Continuous"],["Date of onset","Time"],["District of residence (for a map)","Geographic"],["Dengue serotype (DENV-1 to 4)","Nominal"],["Severity (mild, warning signs, severe)","Ordinal"],["Platelet count","Continuous"]];
+function varGame(){var h="";VARS.forEach(function(v,i){h+='<div class="var" id="v'+i+'"><span>'+esc(v[0])+'</span><select id="vs'+i+'" aria-label="Data type for '+esc(v[0])+'"><option value="">Choose…</option>'+TYPES.map(function(t){return '<option>'+t+'</option>'}).join("")+'</select></div>'});$("#varGame").innerHTML=h;$("#varScore").textContent=""}
+varGame();
+$("#varCheck").onclick=function(){var c=0;VARS.forEach(function(v,i){var el=$("#v"+i),ok=$("#vs"+i).value===v[1];el.className="var "+(ok?"ok":"no");if(ok)c++;el.title=ok?"":("Answer: "+v[1])});
+  $("#varScore").textContent=c+" of "+VARS.length+" correct"+(c<VARS.length?". Hover a red row to see the answer.":". Well done!")};
+$("#varReset").onclick=varGame;
+
+/* ---------- M3 chart picker ---------- */
+var PICK={
+ compare:["Sorted bar chart","Nominal or ordinal groups","Incidence rate per 100,000 by state","Start at zero. Sort by value. Use horizontal bars for long names.","bar"],
+ trend:["Line graph","Time series","Weekly ILI consultation rate over 3 years","Only use a line for time. Label the line directly.","line"],
+ outbreak:["Epidemic curve (histogram)","Counts by onset time","Food poisoning cases by hour of onset","Bars touch. Interval about ¼ to ⅓ of the incubation period.","epi"],
+ dist:["Histogram or box plot","Continuous","Age of cases; length of hospital stay by ward","Bin width changes the picture. Explain box plots to lay readers.","hist"],
+ rel:["Scatter plot","Two continuous measures","Vaccination coverage vs measles incidence by district","Correlation is not causation.","scatter"],
+ place:["Choropleth map (rates) or dot map (cases)","Geographic","Dengue incidence rate by district","Map rates, not counts. Never show home addresses.","map"],
+ share:["Bar chart or waffle chart","Part of a whole","7 out of 10 adults screened","Pie only for 2 to 3 slices, never in 3D.","waffle"],
+ one:["A big number","Any","92% of children fully immunised in 2024","Add context: target, last year, or national figure.","big"],
+ lookup:["Table (or heat map)","Any","Cases and rates by state in an annual report","Right-align numbers. Light borders. Shade to show high values.","table"]};
+function thumb(kind){
+  var s='<svg class="chart" viewBox="0 0 260 150" role="img" aria-label="Example '+kind+' chart">';
+  if(kind==="bar"){[120,95,70,52,40,28].forEach(function(w,i){s+=hbar(20,12+i*22,w*1.8,16,i===0?"m1":"mm")})}
+  if(kind==="line"){s+='<path class="l1" d="M10,120 L40,110 L70,115 L100,90 L130,95 L160,60 L190,70 L220,40 L250,45"/>'}
+  if(kind==="epi"||kind==="hist"){[2,5,12,22,30,24,14,8,4,2].forEach(function(v,i){s+=rbar(15+i*23,130-v*3.6,23-(kind==="epi"?1:2),v*3.6,"m1")})}
+  if(kind==="scatter"){var r=rng(3);for(var i=0;i<26;i++){var x=r()*220+20;s+='<circle class="m1" cx="'+x+'" cy="'+(130-x*.42-r()*30+10)+'" r="4"/>'}}
+  if(kind==="map"){var r2=rng(9);for(var a=0;a<5;a++)for(var b=0;b<4;b++){var v=r2();s+='<rect x="'+(30+a*42)+'" y="'+(10+b*33)+'" width="40" height="31" rx="3" style="fill:var(--s1);opacity:'+(.15+v*.85).toFixed(2)+'"/>'}}
+  if(kind==="waffle"){for(var k=0;k<10;k++)s+='<rect x="'+(30+(k%5)*42)+'" y="'+(25+Math.floor(k/5)*50)+'" width="36" height="42" rx="4" class="'+(k<7?"m1":"mm")+'"/>'}
+  if(kind==="big"){s+='<text x="130" y="88" text-anchor="middle" class="t-strong" style="font-size:52px;font-family:var(--f-display)">92%</text><text x="130" y="115" text-anchor="middle">fully immunised, 2024</text>'}
+  if(kind==="table"){for(var rr=0;rr<5;rr++){s+='<line class="ax" x1="10" x2="250" y1="'+(30+rr*24)+'" y2="'+(30+rr*24)+'"/>';for(var cc=0;cc<3;cc++)s+='<rect x="'+(110+cc*48)+'" y="'+(12+rr*24)+'" width="40" height="14" rx="2" style="fill:var(--s1);opacity:'+(.15+((rr*3+cc)%5)*.17).toFixed(2)+'"/>'}}
+  return s+'</svg>';
+}
+function pick(){var p=PICK[$("#cpPurpose").value];
+  $("#cpOut").innerHTML='<div>'+thumb(p[4])+'</div><div class="prose"><h3>'+p[0]+'</h3><p><b>Data type:</b> '+p[1]+'</p><p><b>Example:</b> '+p[2]+'</p><p class="note">'+p[3]+'</p></div>'}
+$("#cpPurpose").onchange=pick;pick();
+
+/* ---------- M4 epi lab ---------- */
+var BINS=[1,2,4,6,8,12,24],asLine=false;
+function epiLab(){var b=BINS[+$("#binSlider").value];$("#binLbl").textContent=b+(b===1?" hour":" hours");
+  epi($("#epiChart"),b,asLine);
+  var fb=$("#binFb");
+  if(asLine){fb.className="fb no";fb.textContent="A line suggests smooth change between points. An epi curve is a count of new cases in each interval, so draw it as touching bars."}
+  else if(b<6){fb.className="fb no";fb.textContent="Too narrow. The bars are spiky and the overall shape is hard to see."}
+  else if(b>8){fb.className="fb no";fb.textContent="Too wide. Almost all cases fall in one or two bars and you lose the shape."}
+  else{fb.className="fb ok";fb.textContent="Good choice. "+b+" hours is about "+(b===6?"one quarter":"one third")+" of the 24-hour incubation period. You can see one sharp peak: a point-source outbreak."}
+}
+$("#binSlider").oninput=epiLab;
+$("#lineToggle").onclick=function(){asLine=!asLine;this.setAttribute("aria-pressed",asLine);this.textContent=asLine?"Back to bars":"Draw as a line instead";epiLab()};
+epiLab();
+var SHAPES=[{a:"Point source",v:[0,1,4,12,18,10,4,1,0,0,0,0,0,0]},{a:"Continuous common source",v:[0,2,6,9,10,9,11,10,9,10,8,9,4,1]},{a:"Person-to-person",v:[1,2,1,0,3,5,3,1,6,10,7,2,12,15]}];
+var order=[2,0,1];
+(function(){var h="";order.forEach(function(si,k){h+='<div class="bench" style="padding:14px"><svg class="chart" id="sh'+k+'" viewBox="0 0 300 150" role="img" aria-label="Mystery epidemic curve '+(k+1)+'"></svg><select id="shs'+k+'" aria-label="Pattern for curve '+(k+1)+'"><option value="">Which pattern?</option>'+SHAPES.map(function(s){return '<option>'+s.a+'</option>'}).join("")+'</select><div class="fb" id="shf'+k+'" hidden></div></div>'});
+  $("#shapeGame").innerHTML=h;
+  order.forEach(function(si,k){var v=SHAPES[si].v;columns({svg:$("#sh"+k),W:300,H:150,labels:v.map(function(x,i){return ""+(i+1)}),values:v,gap:1,every:3,ymax:20});
+    $("#shs"+k).onchange=function(){var f=$("#shf"+k),ok=this.value===SHAPES[si].a;f.hidden=false;f.className="fb "+(ok?"ok":"no");f.textContent=ok?"Correct.":"Not quite. Look at the number and spacing of the peaks."}})})();
+
+/* ---------- M5 fix chart ---------- */
+var ST=[["Pahang",6.23,1.68],["Kelantan",2.85,1.89],["Terengganu",1.92,1.27],["Perak",1.10,2.56],["Kedah",0.88,2.19],["Sabah",0.74,3.42],["Sarawak",0.61,2.49],["Negeri Sembilan",0.45,1.21],["Melaka",0.38,1.0],["Perlis",0.33,0.29],["Pulau Pinang",0.25,1.78],["Selangor",0.21,7.2],["W.P. Kuala Lumpur",0.18,2.0],["Johor",0.10,4.1]];
+ST.forEach(function(s){s.push(Math.round(s[1]*s[2]*10))});
+var natRate=(function(){var c=0,p=0;ST.forEach(function(s){c+=s[3];p+=s[2]});return +(c/(p*10)).toFixed(2)})();
+var ALPHA=ST.slice().sort(function(a,b){return a[0].localeCompare(b[0])});
+var FIX=[["rate","Use rates per 100,000, not raw counts"],["sort","Sort the bars from highest to lowest"],["hbar","Use horizontal bars so the long state names fit"],["colour","Grey for context, one colour for the message"],["title","Write an action title, with what, where and when"],["nat","Add the national rate for context"],["label","Label the values directly"]];
+var fx=store.get("fix",{});
+$("#fixes").innerHTML=FIX.map(function(f){return '<label class="chk" for="fx-'+f[0]+'"><input type="checkbox" id="fx-'+f[0]+'"'+(fx[f[0]]?" checked":"")+'><span>'+f[1]+'</span></label>'}).join("");
+FIX.forEach(function(f){$("#fx-"+f[0]).onchange=function(){fx[f[0]]=this.checked;store.set("fix",fx);fixChart()}});
+var RAINBOW=["#e34948","#eb6834","#eda100","#1baf7a","#2a78d6","#6250d6","#e87ba4"];
+function fixChart(){
+  var svg=$("#fixChart"),W=640,H=400,useRate=fx.rate,val=function(s){return useRate?s[1]:s[3]};
+  var data=(fx.sort?ST.slice().sort(function(a,b){return val(b)-val(a)}):ALPHA.slice());
+  var items=data.map(function(s){return {n:s[0],v:val(s),top:s[0]==="Pahang"}});
+  if(fx.nat&&useRate){items.push({n:"MALAYSIA",v:natRate,nat:true});if(fx.sort)items.sort(function(a,b){return b.v-a.v})}
+  var title=fx.title?(useRate?"Pahang has the highest rate of XYZ, about "+Math.round(6.23/natRate)+" times the national rate":"Selangor has the most XYZ cases"):"XYZ";
+  var sub=fx.title?(useRate?"Rate of XYZ per 100,000 population by state, Malaysia, 2024 (illustrative)":"Number of XYZ cases by state, Malaysia, 2024 (illustrative)"):"";
+  var s='<text class="t-title" x="0" y="18" style="font-size:'+(fx.title?16:14)+'px">'+esc(title)+'</text>'+(sub?'<text x="0" y="38">'+esc(sub)+'</text>':"");
+  var max=Math.max.apply(null,items.map(function(i){return i.v})),xmax=nice(max*1.08)>max*1.6?Math.ceil(max*1.15):nice(max*1.08);
+  var cls=function(it,i){if(fx.colour)return it.nat?"mm nat":(fx.rate?(it.top?"m1":"mm"):(it.n==="Selangor"?"m1":"mm"));return "rb"+(i%7)};
+  if(fx.hbar){
+    var L=132,R=50,T=56,B=24,pw=W-L-R,ph=H-T-B,slot=ph/items.length,bh=slot-3;
+    var x=function(v){return L+v/xmax*pw};
+    ticks(xmax,4).forEach(function(t){if(t<=xmax)s+='<line class="grid" x1="'+x(t)+'" x2="'+x(t)+'" y1="'+T+'" y2="'+(T+ph)+'"/><text x="'+x(t)+'" y="'+(H-6)+'" text-anchor="middle">'+t+'</text>'});
+    items.forEach(function(it,i){var y=T+i*slot+1.5;
+      s+='<text x="'+(L-8)+'" y="'+(y+bh/2+4)+'" text-anchor="end"'+(it.nat?' class="t-strong"':'')+'>'+esc(it.n)+'</text>';
+      s+=hbar(L,y,x(it.v)-L,bh,cls(it,i),it.n+": "+it.v);
+      if(fx.label)s+='<text x="'+(x(it.v)+6)+'" y="'+(y+bh/2+4)+'"'+(it.top||it.nat?' class="t-strong"':'')+'>'+(useRate?it.v.toFixed(2):it.v)+'</text>';
+    });
+    s+='<line class="ax" x1="'+L+'" x2="'+L+'" y1="'+T+'" y2="'+(T+ph)+'"/>';
+  } else {
+    var L2=44,R2=10,T2=56,B2=110,pw2=W-L2-R2,ph2=H-T2-B2,slot2=pw2/items.length,bw=slot2-4;
+    var y2=function(v){return T2+ph2-v/xmax*ph2};
+    ticks(xmax,4).forEach(function(t){if(t<=xmax)s+='<line class="grid" x1="'+L2+'" x2="'+(W-R2)+'" y1="'+y2(t)+'" y2="'+y2(t)+'"/><text x="'+(L2-6)+'" y="'+(y2(t)+4)+'" text-anchor="end">'+t+'</text>'});
+    items.forEach(function(it,i){var xx=L2+i*slot2+2;s+=rbar(xx,y2(it.v),bw,T2+ph2-y2(it.v),cls(it,i),it.n+": "+it.v);
+      var cx=xx+bw/2,cy=T2+ph2+10;s+='<text transform="translate('+cx+','+cy+') rotate(-50)" text-anchor="end">'+esc(it.n)+'</text>';
+      if(fx.label)s+='<text x="'+cx+'" y="'+(y2(it.v)-5)+'" text-anchor="middle" style="font-size:10px">'+(useRate?it.v.toFixed(1):it.v)+'</text>'});
+    s+='<line class="ax" x1="'+L2+'" x2="'+(W-R2)+'" y1="'+(T2+ph2)+'" y2="'+(T2+ph2)+'"/>';
+  }
+  if(fx.title)s+='<text class="t-mute" x="'+W+'" y="'+(H+14)+'" text-anchor="end">Source: illustrative data for teaching</text>';
+  svg.setAttribute("viewBox","0 0 640 "+(fx.title?418:400));
+  svg.innerHTML=s;
+  $$(".rb0,.rb1,.rb2,.rb3,.rb4,.rb5,.rb6",svg).forEach(function(p){var k=+p.getAttribute("class").match(/rb(\d)/)[1];p.style.fill=RAINBOW[k]});
+}
+fixChart();
+
+/* ---------- M6 labs ---------- */
+function trunc(){var y0=+$("#truncSlider").value;$("#truncLbl").textContent=y0+"%";
+  columns({svg:$("#truncChart"),labels:["District A","District B"],values:[88,93],ymin:y0,ymax:100,ticks:ticks(100,5).filter(function(v){return v>=y0}).concat(y0%20?[y0]:[]),unit:"%",ylab:"MMR coverage (%)",fmt:function(v){return v+"%"},cls:function(i){return i?"m1":"mm"}});
+  var hA=88-y0,hB=93-y0,ratio=(hB/hA).toFixed(1),f=$("#truncFb");
+  if(y0===0){f.className="fb ok";f.textContent="The axis starts at zero. The bars look almost the same height, which is true: 88% and 93% are close."}
+  else{f.className="fb no";f.textContent="Now B's bar looks "+ratio+" times taller than A's, but the real difference is only 5 percentage points."}}
+$("#truncSlider").oninput=trunc;trunc();
+var days=[["27 Apr",310],["28 Apr",298],["29 Apr",285],["30 Apr",302],["1 May",276],["2 May",290],["3 May",262],["4 May",281],["5 May",305],["6 May",268],["7 May",295],["8 May",288]];
+var inOrder=false;
+function orderChart(){var d=inOrder?days:days.slice().sort(function(a,b){return b[1]-a[1]});
+  columns({svg:$("#orderChart"),labels:d.map(function(x){return x[0]}),values:d.map(function(x){return x[1]}),ylab:"New cases",every:1,unit:" cases",title:inOrder?"Daily new cases, in time order":"Daily new cases (as posted)"});
+  var f=$("#orderFb");f.className="fb "+(inOrder?"ok":"no");
+  f.textContent=inOrder?"In time order, the numbers go up and down around 290 a day. There is no clear fall.":"It looks like cases are falling every day. Read the x-axis: the dates are not in order.";}
+$("#orderToggle").onclick=function(){inOrder=!inOrder;this.setAttribute("aria-pressed",inOrder);this.textContent=inOrder?"Show as posted (sorted by size)":"Put dates in time order";orderChart()};orderChart();
+var yrs=[["1998",440],["1999",450],["2000",430],["2001",455],["2002",445],["2003",470],["2004",460],["2005",520],["2006",640],["2007",780],["2008",790],["2009",760],["2010",720],["2011",740]];
+var flipped=true;
+function flipChart(){var svg=$("#flipChart"),W=640,H=240,L=48,R=12,T=30,B=30,pw=W-L-R,ph=H-T-B,max=900;
+  var y=function(v){return flipped?T+v/max*ph:T+ph-v/max*ph},slot=pw/yrs.length,s='<text class="t-title" x="0" y="16">Firearm murders per year'+(flipped?" (y-axis flipped)":"")+'</text>';
+  [0,300,600,900].forEach(function(v){s+='<line class="grid" x1="'+L+'" x2="'+(W-R)+'" y1="'+y(v)+'" y2="'+y(v)+'"/><text x="'+(L-8)+'" y="'+(y(v)+4)+'" text-anchor="end">'+v+'</text>'});
+  var d="";yrs.forEach(function(p,i){d+=(i?"L":"M")+(L+slot*i+slot/2)+","+y(p[1])});
+  s+='<path class="l2" d="'+d+'"/>';
+  yrs.forEach(function(p,i){s+='<circle class="m2" cx="'+(L+slot*i+slot/2)+'" cy="'+y(p[1])+'" r="3.5"><title>'+p[0]+": "+p[1]+'</title></circle>';if(i%2===0)s+='<text x="'+(L+slot*i+slot/2)+'" y="'+(H-8)+'" text-anchor="middle">'+p[0]+'</text>'});
+  var lx=L+slot*7+slot/2;s+='<line class="ref" x1="'+lx+'" x2="'+lx+'" y1="'+T+'" y2="'+(T+ph)+'"/><text x="'+(lx+6)+'" y="'+(T+12)+'">2005: new law</text>';
+  svg.innerHTML=s;}
+$("#flipToggle").onclick=function(){flipped=!flipped;this.setAttribute("aria-pressed",flipped);this.textContent=flipped?"Flipped axis (as published)":"Normal axis (up means more)";flipChart()};flipChart();
+var SERO=[["DENV-1",26],["DENV-2",23],["DENV-3",22],["DENV-4",18],["Unknown",11]];
+(function(){var svg=$("#pieChart"),cx=150,cy=130,r=110,a=-Math.PI/2,s="",fills=["var(--s1)","var(--s2)","#1baf7a","#eda100","var(--mute)"];
+  SERO.forEach(function(p,i){var b=a+p[1]/100*2*Math.PI,lg=b-a>Math.PI?1:0;
+    s+='<path d="M'+cx+','+cy+'L'+(cx+r*Math.cos(a))+','+(cy+r*Math.sin(a))+'A'+r+','+r+' 0 '+lg+' 1 '+(cx+r*Math.cos(b))+','+(cy+r*Math.sin(b))+'Z" style="fill:'+fills[i]+';stroke:var(--panel);stroke-width:2"></path>';
+    var m=(a+b)/2;s+='<text x="'+(cx+r*.68*Math.cos(m))+'" y="'+(cy+r*.68*Math.sin(m)+4)+'" text-anchor="middle" style="fill:#fff;font-weight:700">'+p[0]+'</text>';a=b});
+  svg.innerHTML=s;
+  var bs="",bsvg=$("#pieBar"),L=70;SERO.forEach(function(p,i){var y=20+i*46;bs+='<text x="'+(L-8)+'" y="'+(y+22)+'" text-anchor="end">'+p[0]+'</text>'+hbar(L,y+6,p[1]*7.5,26,i===1||i===2?"m1":"mm",p[0]+": "+p[1]+"%")+'<text x="'+(L+p[1]*7.5+6)+'" y="'+(y+24)+'">'+p[1]+'%</text>'});
+  bsvg.innerHTML=bs;})();
+$$("[data-pie]").forEach(function(b){b.onclick=function(){$("#pieBarWrap").hidden=false;var f=$("#pieFb");f.hidden=false;var ok=b.getAttribute("data-pie")==="2";
+  f.className="fb "+(ok?"ok":"no");f.textContent=(ok?"Right, DENV-2 is bigger, but only just: 23% vs 22%.":"DENV-2 is bigger: 23% vs 22%.")+" With the bar chart next to it, the difference is much easier to see. People judge length better than angle."}});
+
+/* ---------- M7 tools ---------- */
+var TOOLS=[["Microsoft Excel / Google Sheets","Spreadsheet","Paid / free","Quick bar, line and epi curve charts","Beginner"],["Epi Info (CDC)","Epidemiology package","Free","Outbreak data entry, epi curves, basic maps","Beginner"],["Datawrapper / Flourish","Web chart tools","Free tiers","Clean, mobile-friendly charts for websites","Beginner"],["Canva / PowerPoint","Design and slides","Free tiers / paid","Infographics, posters, slides","Beginner"],["Stata / SPSS","Statistics package","Paid","Charts alongside statistical analysis","Intermediate"],["Power BI / Tableau","Dashboard software","Paid / free (Tableau Public)","Interactive dashboards from a database","Intermediate"],["QGIS / ArcGIS","GIS","Free / paid","Choropleth maps, dot maps, buffer zones","Intermediate"],["DHIS2","Health information platform","Free","Routine surveillance dashboards","Intermediate"],["R (ggplot2, incidence2, sf, Shiny)","Programming language","Free","Reproducible charts, epi curves, maps, web apps","Advanced"],["Python (matplotlib, seaborn, plotly)","Programming language","Free","Automated and interactive charts","Advanced"]];
+function tools(l){$("#toolTbl").innerHTML='<tr><th>Tool</th><th>Type</th><th>Cost</th><th>Good for</th><th>Level</th></tr>'+TOOLS.filter(function(t){return l==="all"||t[4]===l}).map(function(t){return '<tr><td><b>'+esc(t[0])+'</b></td><td>'+t[1]+'</td><td>'+t[2]+'</td><td>'+t[3]+'</td><td>'+t[4]+'</td></tr>'}).join("")}
+$$("#toolFilter button").forEach(function(b){b.onclick=function(){$$("#toolFilter button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});tools(b.getAttribute("data-lvl"))}});tools("all");
+
+/* ---------- quizzes ---------- */
+var QZ={
+m1:[["What is the main reason we draw an epidemic curve during an outbreak?",["To decorate the report","To see quickly if the outbreak is growing and guide action","To replace the line list","To show every patient's name"],1,"Charts in public health guide action. The epi curve shows if cases are rising, peaking or falling."],
+    ["A quick chart you make for yourself to check the data for errors is…",["Explanatory","Exploratory","An infographic","A dashboard"],1,"Exploratory charts are for you. They do not need to be pretty."],
+    ["Which question should you ask first, before drawing?",["Which colours look nice?","Who is my audience?","Should I use 3D?","Which font is newest?"],1,"Audience comes first. It decides the chart type, the words and the level of detail."]],
+m2:[["Age group (0–4, 5–14, 15–64, 65+) is which data type?",["Nominal","Ordinal","Continuous","Geographic"],1,"Age groups have a natural order, so they are ordinal. Keep that order in the chart."],
+    ["Incubation period in hours is…",["Nominal","Ordinal","Continuous numerical","Part of a whole"],2,"It is measured on a scale, so it is continuous. A histogram or box plot fits."],
+    ["Which chart suits a nominal variable such as state?",["Line graph","Bar chart","Histogram","Scatter plot"],1,"Use bars for categories. A line suggests a trend between unrelated groups."]],
+m3:[["You want to show the link between vaccination coverage and measles incidence across 40 districts. Best chart?",["Pie chart","Scatter plot","Stacked bar","Line graph"],1,"Two continuous measures on the same unit: a scatter plot. Remember, correlation is not causation."],
+    ["When is a pie chart acceptable?",["Never","For 2 to 3 parts of a whole, in 2D","For 10 or more categories","Whenever it is in 3D"],1,"Pies only work with very few slices. A bar chart is usually better."],
+    ["You need exact values by state for an annual report appendix. Best display?",["Table","Big number","Slope graph","Animated map"],0,"Tables are best for looking up exact values."]],
+m4:[["Average incubation is 24 hours. What epi curve interval should you use?",["1 hour","6 to 8 hours","24 hours","1 week"],1,"Use about one quarter to one third of the incubation period: 6 to 8 hours."],
+    ["One sharp peak in an epi curve suggests…",["Person-to-person spread","A point-source outbreak","A continuous common source","No outbreak"],1,"Everyone was exposed at about the same time, for example one meal."],
+    ["Why should an epi curve use bars, not a line?",["Lines are harder to draw","Each bar is a count of new cases in an interval of continuous time","Bars are more colourful","Lines need more data"],1,"An epi curve is a histogram: touching bars, each one a count in its interval."]],
+m5:[["Why use rates per 100,000 when comparing states?",["Rates are bigger numbers","States have different population sizes","Counts are always wrong","Rates look nicer"],1,"Big states always have more cases. Rates make a fair comparison."],
+    ["Which title is best?",["XYZ","Chart 3","Pahang has the highest XYZ rate, Malaysia, 2024","DATA BY STATE"],2,"An action title gives the message plus what, where and when."],
+    ["Which colour pair is safer for colour-blind readers?",["Red and green","Blue and orange","Green and brown","Red and brown"],1,"Blue and orange stay distinct for the most common types of colour blindness."]],
+m6:[["A bar chart's y-axis starts at 80%. What is the risk?",["None","Small differences look huge","The bars get too long","The chart cannot be printed"],1,"Bars encode length from zero. Cut the axis and a 5-point gap can look like double."],
+    ["The Georgia COVID-19 chart (May 2020) misled because…",["It used a pie","Dates were not in time order","It had no colour","It used rates"],1,"Sorting bars by size put dates out of order and created a false downward trend."],
+    ["Mapping raw case counts by district tends to…",["Make big-population areas look worst","Make small areas look worst","Show the true risk","Hide all cases"],0,"More people means more cases. Map rates instead."]],
+m7:[["Which tool is free and widely used for routine surveillance dashboards by ministries of health?",["DHIS2","Canva","SPSS","PowerPoint"],0,"DHIS2 is a free health information platform used in many countries."],
+    ["You need reproducible epi curves and maps every week. Good choice?",["Hand-drawing","R with ggplot2, incidence2 and sf","3D pie in Excel","A poster"],1,"Code makes weekly charts repeatable and consistent."],
+    ["Which rule applies to a dashboard as much as to a printed chart?",["Bars start at zero","Use as many colours as possible","3D is fine online","Titles are optional"],0,"The rules do not change with the tool."]]
+};
+var qres=store.get("quiz",{});
+function quizBlock(el,key,qs,onDone){
+  var answered=0,right=0,h='<h2>Check your understanding</h2>';
+  qs.forEach(function(q,i){h+='<div class="q"><h4>'+(i+1)+'. '+esc(q[0])+'</h4><div class="opts">'+q[1].map(function(o,j){return '<button data-q="'+i+'" data-o="'+j+'">'+esc(o)+'</button>'}).join("")+'</div><p class="why" hidden></p></div>'});
+  h+='<div class="readout" data-sc></div>';
+  el.innerHTML=h;
+  $$(".opts button",el).forEach(function(b){b.onclick=function(){
+    var qi=+b.getAttribute("data-q"),oi=+b.getAttribute("data-o"),q=qs[qi],box=b.closest(".q");
+    if(box.getAttribute("data-done"))return;box.setAttribute("data-done","1");
+    $$("button",box).forEach(function(x){var j=+x.getAttribute("data-o");if(j===q[2])x.classList.add("right");else if(j===oi)x.classList.add("wrong");x.disabled=true});
+    var w=$(".why",box);w.hidden=false;w.textContent=(oi===q[2]?"Correct. ":"Not quite. ")+q[3];
+    answered++;if(oi===q[2])right++;
+    if(answered===qs.length){$("[data-sc]",el).textContent="You scored "+right+" of "+qs.length+".";if(onDone)onDone(right,qs.length)}
+  }});
+}
+$$("[data-quiz]").forEach(function(el){var k=el.getAttribute("data-quiz");quizBlock(el,k,QZ[k],function(r,n){qres[k]=r+"/"+n;store.set("quiz",qres)})});
+
+/* final test */
+function shuffle(a,r){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(r()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+var EXTRAQ=[["A line graph joining values for 14 districts in alphabetical order is…",["Correct for categories","Misleading: it suggests a trend that does not exist","Better than a bar chart","Required by WHO"],1,"Use lines only for time. Districts need bars."],
+ ["What should a spot map never show?",["Case locations","Patients' home addresses","A scale bar","A north arrow"],1,"Protect privacy. Shift or aggregate points."],
+ ["What makes a dual-axis chart risky?",["It is too simple","Any two lines can be made to look linked by choosing the scales","It uses too little ink","It cannot show time"],1,"Use two panels with matching axes instead."],
+ ["Pre-attentive attributes are…",["Fonts","Colour, size and position the eye notices before reading","Footnotes","Data sources"],1,"Use one strong colour to make the key value pop."]];
+var best=store.get("best",null);if(best!=null)$("#ftBest").textContent="Your best score: "+best+"/10";
+$("#ftStart").onclick=function(){var all=[];Object.keys(QZ).forEach(function(k){all=all.concat(QZ[k])});all=all.concat(EXTRAQ);
+  var qs=shuffle(all,rng(Date.now()%100000+1)).slice(0,10);
+  quizBlock($("#ftBox"),"final",qs,function(r){if(best==null||r>best){best=r;store.set("best",r)}$("#ftBest").textContent="Your best score: "+best+"/10"});
+  $("#ftBox h2").textContent="Ten questions";};
+
+/* checklist */
+var CK=["The chart has one clear message","It is the right chart for the data type","The title says what, where and when","Both axes are labelled, with units","Bar charts start at zero","Rates are used when comparing places of different size","Time runs in order, left to right","The source and date are shown","Clutter is removed (no 3D, heavy grids or extra colours)","It is readable by colour-blind viewers","It protects privacy and avoids stigma"];
+var ck=store.get("ck",{});
+function ckRender(){$("#ckList").innerHTML=CK.map(function(c,i){return '<label class="chk" for="ck'+i+'"><input type="checkbox" id="ck'+i+'"'+(ck[i]?" checked":"")+'><span>'+c+'</span></label>'}).join("");
+  CK.forEach(function(c,i){$("#ck"+i).onchange=function(){ck[i]=this.checked;store.set("ck",ck);ckScore()}});ckScore()}
+function ckScore(){var n=CK.filter(function(c,i){return ck[i]}).length;$("#ckMeter").style.width=(n/CK.length*100)+"%";
+  $("#ckScore").textContent=n+" of "+CK.length+(n===CK.length?": ready to share.":n>=8?": nearly there.":": keep improving.")}
+$("#ckReset").onclick=function(){ck={};store.set("ck",ck);ckRender()};ckRender();
+
+/* glossary */
+var GL=[["Action title","A chart title that states the message, such as \"Cases fell by 40% after week 32\"."],["Binning bias","When the width of histogram bins changes how the shape looks."],["Chartjunk","Decoration that does not help understanding: heavy grids, shadows, 3D, pictures."],["Choropleth map","A map where areas are shaded by a value, such as an incidence rate."],["Dot (spot) map","A map with one dot for each case or event."],["Epidemic curve","A histogram of new cases by date or time of onset."],["Explanatory chart","A polished chart that tells one message to an audience."],["Exploratory chart","A quick chart you make to understand the data yourself."],["Heat map","A table or grid where colour shows high and low values."],["Incidence rate","New cases divided by the population at risk, often per 100,000."],["Nominal data","Categories with no order, such as sex or state."],["Ordinal data","Categories with a natural order, such as age group or severity."],["Pre-attentive attributes","Visual features the eye notices before reading: colour, size, position."],["Slope graph","Lines joining values at two time points, to show change."],["Truncated axis","An axis that does not start at zero."],["Waffle chart","A grid of squares, often 10 or 100, showing a share."]];
+$("#glossList").innerHTML=GL.map(function(g){return '<dt>'+g[0]+'</dt><dd>'+esc(g[1])+'</dd>'}).join("");
+
+/* ---------- M6 Don't list with examples ---------- */
+(function(){
+var V='viewBox="0 0 300 210" role="img"';
+function frame(lbl,body){return '<svg class="chart" '+V+' aria-label="'+esc(lbl)+'">'+body+'</svg>'}
+function vbars(vals,labels,o){o=o||{};var L=36,T=o.T||28,B=28,W=300,H=210,pw=W-L-10,ph=H-T-B,y0=o.y0||0,y1=o.y1||nice(Math.max.apply(null,vals)*1.1);
+  var y=function(v){return T+ph-(v-y0)/(y1-y0)*ph},n=vals.length,slot=pw/n,s='';
+  (o.ticks||ticks(y1,4)).forEach(function(t){if(t>=y0&&t<=y1)s+='<line class="grid" x1="'+L+'" x2="'+(W-10)+'" y1="'+y(t)+'" y2="'+y(t)+'"/><text x="'+(L-6)+'" y="'+(y(t)+4)+'" text-anchor="end">'+t+(o.unit||'')+'</text>'});
+  vals.forEach(function(v,i){var x=L+slot*i+slot*.15,top=y(v);s+=rbar(x,top,slot*.7,y(y0)-top,o.cls?o.cls(i):'m1',labels[i]+': '+v);s+='<text x="'+(x+slot*.35)+'" y="'+(H-10)+'" text-anchor="middle"'+(n>5?' style="font-size:9.5px"':'')+'>'+esc(labels[i])+'</text>'});
+  return s+'<line class="ax" x1="'+L+'" x2="'+(W-10)+'" y1="'+y(y0)+'" y2="'+y(y0)+'"/>'}
+function ttl(t){return '<text class="t-title" x="0" y="15" style="font-size:13px">'+esc(t)+'</text>'}
+var CAT=["#2a78d6","#eb6834","#1baf7a","#eda100","#e87ba4","#008300","#6250d6","#e34948"];
+
+/* 3D pie: depth walls then top */
+function pie3d(){var cx=150,cy=105,rx=120,ry=55,d=26,vals=[[30,"A"],[25,"B"],[25,"C"],[20,"D"]],a=Math.PI*.15,s=ttl("Cases by district (3D pie)"),tops='';
+  var shade=["#1d5aa3","#b84c22","#13845c","#b67a00"];
+  vals.forEach(function(p,i){var b=a+p[0]/100*2*Math.PI,lg=b-a>Math.PI?1:0;
+    var x1=cx+rx*Math.cos(a),y1=cy+ry*Math.sin(a),x2=cx+rx*Math.cos(b),y2=cy+ry*Math.sin(b);
+    // wall only for front half (sin>0)
+    var wa=Math.max(a,0),wb=Math.min(b,Math.PI);if(wb>wa){var u1=cx+rx*Math.cos(wa),v1=cy+ry*Math.sin(wa),u2=cx+rx*Math.cos(wb),v2=cy+ry*Math.sin(wb);
+      s+='<path d="M'+u1+','+v1+'A'+rx+','+ry+' 0 0 1 '+u2+','+v2+'L'+u2+','+(v2+d)+'A'+rx+','+ry+' 0 0 0 '+u1+','+(v1+d)+'Z" style="fill:'+shade[i]+'"/>'}
+    var wa2=Math.max(a,2*Math.PI),wb2=Math.min(b,3*Math.PI);if(wb2>wa2){var p1=cx+rx*Math.cos(wa2),q1=cy+ry*Math.sin(wa2),p2=cx+rx*Math.cos(wb2),q2=cy+ry*Math.sin(wb2);
+      s+='<path d="M'+p1+','+q1+'A'+rx+','+ry+' 0 0 1 '+p2+','+q2+'L'+p2+','+(q2+d)+'A'+rx+','+ry+' 0 0 0 '+p1+','+(q1+d)+'Z" style="fill:'+shade[i]+'"/>'}
+    tops+='<path d="M'+cx+','+cy+'L'+x1+','+y1+'A'+rx+','+ry+' 0 '+lg+' 1 '+x2+','+y2+'Z" style="fill:'+CAT[i]+';stroke:#fff;stroke-width:1"/>';
+    var m=(a+b)/2;tops+='<text x="'+(cx+rx*.6*Math.cos(m))+'" y="'+(cy+ry*.6*Math.sin(m)+4)+'" text-anchor="middle" style="fill:#fff;font-weight:700">'+p[1]+'</text>';a=b});
+  return frame("3D pie chart where the front slice looks biggest",s+tops)}
+
+/* chartjunk */
+function junk(){var s=ttl("CASES!!! BY STATE");
+  s+='<defs><linearGradient id="jg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset="1" stop-color="#f29b9b"/></linearGradient><pattern id="jp" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="8" fill="#2a78d6"/><rect x="4" width="4" height="8" fill="#6250d6"/></pattern></defs>';
+  s+='<rect x="30" y="24" width="265" height="160" fill="url(#jg)" stroke="#000" stroke-width="2"/>';
+  for(var g=0;g<9;g++)s+='<line x1="30" x2="295" y1="'+(24+g*20)+'" y2="'+(24+g*20)+'" stroke="#000" stroke-width="1"/>';
+  for(var g2=0;g2<14;g2++)s+='<line y1="24" y2="184" x1="'+(30+g2*20)+'" x2="'+(30+g2*20)+'" stroke="#000" stroke-width=".6"/>';
+  [120,90,70,50].forEach(function(h,i){var x=50+i*60;s+='<rect x="'+(x+6)+'" y="'+(184-h+6)+'" width="36" height="'+h+'" fill="#555" opacity=".5"/><rect x="'+x+'" y="'+(184-h)+'" width="36" height="'+h+'" fill="url(#jp)" stroke="#000" stroke-width="2"/><text x="'+(x+18)+'" y="'+(178-h)+'" text-anchor="middle" style="font-size:22px">🦟</text>'});
+  ["Pahang","Kelantan","Perak","Kedah"].forEach(function(n,i){s+='<text x="'+(68+i*60)+'" y="200" text-anchor="middle" style="font-family:Impact,fantasy;font-size:11px">'+n.toUpperCase()+'</text>'});
+  return frame("Bar chart cluttered with gradients, patterns, shadows, heavy grids and icons",s)}
+
+/* line joining districts */
+var DIST=["Bentong","Cameron","Jerantut","Kuantan","Lipis","Pekan","Raub"],DV=[12,30,8,22,5,18,9];
+function lineCats(){var L=36,T=28,ph=150,pw=254,slot=pw/DIST.length,y=function(v){return T+ph-v/35*ph},d='',s=ttl("Cases by district");
+  [0,10,20,30].forEach(function(t){s+='<line class="grid" x1="'+L+'" x2="290" y1="'+y(t)+'" y2="'+y(t)+'"/><text x="'+(L-6)+'" y="'+(y(t)+4)+'" text-anchor="end">'+t+'</text>'});
+  DV.forEach(function(v,i){d+=(i?'L':'M')+(L+slot*i+slot/2)+','+y(v)});s+='<path class="l2" d="'+d+'"/>';
+  DV.forEach(function(v,i){s+='<circle class="m2" cx="'+(L+slot*i+slot/2)+'" cy="'+y(v)+'" r="3.5"/><text x="'+(L+slot*i+slot/2)+'" y="'+(i%2?206:194)+'" text-anchor="middle" style="font-size:10px">'+DIST[i]+'</text>'});
+  return frame("Line chart joining unrelated districts as if they were a trend",s)}
+function barCats(){var idx=DV.map(function(v,i){return i}).sort(function(a,b){return DV[b]-DV[a]}),s=ttl("Cases by district, sorted"),L=62,T=26,bh=21;
+  idx.forEach(function(i,k){var y=T+k*25;s+='<text x="'+(L-6)+'" y="'+(y+15)+'" text-anchor="end">'+DIST[i]+'</text>'+hbar(L,y,DV[i]*6.6,bh,k===0?'m1':'mm',DIST[i]+': '+DV[i])+'<text x="'+(L+DV[i]*6.6+5)+'" y="'+(y+15)+'">'+DV[i]+'</text>'});
+  return frame("Sorted horizontal bar chart of cases by district",s)}
+
+/* cherry-pick */
+var WK=[40,44,52,61,70,82,95,104,98,90,85,88,96,110,121,130];
+function weekLine(from,to,title,mark){var L=36,T=28,ph=150,pw=254,n=to-from,slot=pw/(n-1||1),max=140,y=function(v){return T+ph-v/max*ph},d='',s=ttl(title);
+  [0,50,100].forEach(function(t){s+='<line class="grid" x1="'+L+'" x2="290" y1="'+y(t)+'" y2="'+y(t)+'"/><text x="'+(L-6)+'" y="'+(y(t)+4)+'" text-anchor="end">'+t+'</text>'});
+  if(mark){var a=L+(8-from)*slot,b=L+(11-from)*slot;s+='<rect x="'+a+'" y="'+T+'" width="'+(b-a)+'" height="'+ph+'" style="fill:var(--s2);opacity:.15"/><text x="'+((a+b)/2)+'" y="'+(T+12)+'" text-anchor="middle" style="font-size:10px">picked weeks</text>'}
+  for(var i=from;i<to;i++)d+=(i>from?'L':'M')+(L+(i-from)*slot)+','+y(WK[i]);s+='<path class="'+(mark?'l1':'l2')+'" d="'+d+'"/>';
+  for(var j=from;j<to;j++)if((j-from)%(n>8?3:1)===0)s+='<text x="'+(L+(j-from)*slot)+'" y="200" text-anchor="middle">W'+(j+1)+'</text>';
+  return frame(title,s)}
+
+/* dual axis */
+function dual(){var L=36,R=264,T=28,ph=150,n=10,slot=(R-L)/(n-1),A=[50,52,55,57,60,62,65,67,70,72],Bv=[2.0,2.1,2.3,2.4,2.6,2.7,2.9,3.0,3.2,3.3];
+  var ya=function(v){return T+ph-(v-48)/(74-48)*ph},yb=function(v){return T+ph-(v-1.9)/(3.4-1.9)*ph},s=ttl("Two y-axes: do these move together?"),d1='',d2='';
+  [50,60,70].forEach(function(t){s+='<text x="'+(L-6)+'" y="'+(ya(t)+4)+'" text-anchor="end" style="fill:var(--s1)">'+t+'</text>'});
+  [2,2.5,3].forEach(function(t){s+='<text x="'+(R+6)+'" y="'+(yb(t)+4)+'" style="fill:var(--s2)">'+t+'</text>'});
+  A.forEach(function(v,i){d1+=(i?'L':'M')+(L+i*slot)+','+ya(v)});Bv.forEach(function(v,i){d2+=(i?'L':'M')+(L+i*slot)+','+yb(v)});
+  s+='<line class="ax" x1="'+L+'" x2="'+R+'" y1="'+(T+ph)+'" y2="'+(T+ph)+'"/><path class="l1" d="'+d1+'"/><path class="l2" d="'+d2+'"/>';
+  s+='<text x="'+L+'" y="200">2015</text><text x="'+R+'" y="200" text-anchor="end">2024</text>';
+  return frame("Dual-axis chart where two unrelated lines look linked",s)}
+function panels(){var s=ttl("Two panels, each with its own clear axis"),A=[50,52,55,57,60,62,65,67,70,72],Bv=[2.0,2.1,2.3,2.4,2.6,2.7,2.9,3.0,3.2,3.3];
+  function pan(x0,vals,max,cls,lab){var w=118,T=44,ph=130,y=function(v){return T+ph-v/max*ph},d='',o='<text x="'+x0+'" y="36" style="font-size:11px">'+lab+'</text>';
+    o+='<line class="ax" x1="'+x0+'" x2="'+(x0+w)+'" y1="'+(T+ph)+'" y2="'+(T+ph)+'"/><text x="'+(x0-4)+'" y="'+(T+4)+'" text-anchor="end" style="font-size:10px">'+max+'</text><text x="'+(x0-4)+'" y="'+(T+ph+4)+'" text-anchor="end" style="font-size:10px">0</text>';
+    vals.forEach(function(v,i){d+=(i?'L':'M')+(x0+i*w/9)+','+y(v)});return o+'<path class="'+cls+'" d="'+d+'"/><text x="'+x0+'" y="200" style="font-size:10px">2015</text><text x="'+(x0+w)+'" y="200" text-anchor="end" style="font-size:10px">2024</text>'}
+  return frame("Two separate panels",s+pan(26,A,80,'l1','Screening coverage (%)')+pan(174,Bv,4,'l2','Clinic visits (millions)'))}
+
+/* too many colours */
+var CC=[["Kedah",42],["Perak",38],["Johor",61],["Sabah",35],["Melaka",30],["Perlis",28],["Penang",33]];
+function rainbow(){return frame("Bar chart where every bar has a different bright colour",ttl("Cases by state")+vbars(CC.map(function(c){return c[1]}),CC.map(function(c){return c[0]}),{cls:function(i){return 'rbx'+i}}).replace(/class="bar rbx(\d)"/g,function(m,k){return 'class="bar" style="fill:'+CAT[(+k)%8]+'"'}))}
+function focus(){return frame("Bar chart in grey with one blue bar for Johor",ttl("Johor has the most cases")+vbars(CC.map(function(c){return c[1]}),CC.map(function(c){return c[0]}),{cls:function(i){return i===2?'m1':'mm'}}))}
+
+/* map counts vs rates: tile map */
+var TM=[["Kota",4.1,210],["Hulu",0.3,9],["Bukit",0.6,30],["Pantai",0.4,25],["Sungai",0.2,14],["Tanjung",0.9,24],["Batu",0.25,21],["Paya",0.15,12],["Kuala",1.8,40]];
+function tiles(useRate){var vals=TM.map(function(t){return useRate?t[2]/(t[1]*10):t[2]}),max=Math.max.apply(null,vals),s=ttl(useRate?"Rate per 100,000 by district":"Number of cases by district");
+  TM.forEach(function(t,i){var x=20+(i%3)*90,y=26+Math.floor(i/3)*58,v=vals[i];
+    s+='<rect x="'+x+'" y="'+y+'" width="86" height="54" rx="4" style="fill:var(--s1);opacity:'+(.12+.88*v/max).toFixed(2)+'"/>';
+    var dk=v/max>.5,fc=dk?' style="fill:#fff;font-size:11px"':' style="font-size:11px"';s+='<text x="'+(x+6)+'" y="'+(y+18)+'"'+(dk?' style="fill:#fff;font-size:11px;font-weight:700"':' class="t-strong" style="font-size:11px"')+'>'+t[0]+'</text><text x="'+(x+6)+'" y="'+(y+36)+'"'+fc+'>'+(useRate?v.toFixed(1):v)+'</text>'+(useRate?'':'<text x="'+(x+6)+'" y="'+(y+49)+'"'+(dk?' style="fill:#fff;font-size:9px"':' class="t-mute" style="font-size:9px"')+'>pop '+t[1]+'M</text>')});
+  return frame(useRate?"District tile map shaded by rate: small rural districts stand out":"District tile map shaded by count: the big city looks worst",s)}
+
+/* many-slice pie */
+function manyPie(){var vals=[16,14,13,12,11,10,9,8,7],cx=150,cy=112,r=88,a=-Math.PI/2,s=ttl("Cases by age group");
+  vals.forEach(function(v,i){var b=a+v/100*2*Math.PI;s+='<path d="M'+cx+','+cy+'L'+(cx+r*Math.cos(a))+','+(cy+r*Math.sin(a))+'A'+r+','+r+' 0 0 1 '+(cx+r*Math.cos(b))+','+(cy+r*Math.sin(b))+'Z" style="fill:'+(i<8?CAT[i]:'#888')+';stroke:var(--panel);stroke-width:1.5"/>';a=b});
+  return frame("Pie chart with nine similar slices",s)}
+function waffleBar(){var vals=[["0–4",16],["5–14",14],["15–24",13],["25–34",12],["35–44",11],["45–54",10],["55–64",9],["65–74",8],["75+",7]],s=ttl("Cases by age group (%)"),L=46;
+  vals.forEach(function(p,i){var y=24+i*20;s+='<text x="'+(L-6)+'" y="'+(y+13)+'" text-anchor="end" style="font-size:11px">'+p[0]+'</text>'+hbar(L,y,p[1]*13,16,'m1',p[0]+': '+p[1]+'%')+'<text x="'+(L+p[1]*13+5)+'" y="'+(y+13)+'" style="font-size:11px">'+p[1]+'%</text>'});
+  return frame("Bar chart of nine age groups in natural order",s)}
+
+var ROWS=[
+ ["Cut the y-axis of a bar chart","A rise from 50 to 55 looks like the bar doubled.","Start bars at zero.",
+   frame("Bar chart with y-axis starting at 49, so 55 looks double 50",ttl("Cases, 2023 vs 2024")+vbars([50,55],["2023","2024"],{y0:49,y1:56,ticks:[49,51,53,55],cls:function(i){return i?'m2':'mm'}})),
+   frame("Bar chart starting at zero, bars nearly equal",ttl("Cases, 2023 vs 2024")+vbars([50,55],["2023","2024"],{cls:function(i){return i?'m1':'mm'}}))],
+ ["Use 3D charts","Perspective makes front slices look bigger and hides the back.","A flat 2D bar chart.",pie3d(),
+   frame("Flat bar chart of the same four values",ttl("Cases by district (%)")+vbars([30,25,25,20],["A","B","C","D"],{unit:'%',cls:function(i){return i?'mm':'m1'}}))],
+ ["Use the wrong chart type","A line joining districts suggests a trend that does not exist.","Bars for categories; lines only for time.",lineCats(),barCats()],
+ ["Cherry-pick the data","Showing only weeks 9 to 11 makes cases look like they are falling.","Show the whole period.",
+   weekLine(8,11,"Cases are falling! (weeks 9–11 only)",false),weekLine(0,16,"Full 16 weeks: cases are still rising",true)],
+ ["Use different scales, or two y-axes","By picking the two scales, any two lines can be made to look linked.","Separate panels, each starting at zero.",dual(),panels()],
+ ["Add chartjunk","Gradients, patterns, shadows, heavy grids and pictures pull the eye away from the data.","Remove anything that does not help understanding.",junk(),
+   frame("Clean bar chart of the same data",ttl("Cases by state")+vbars([120,90,70,50],["Pahang","Kelantan","Perak","Kedah"],{cls:function(i){return i?'mm':'m1'}}))],
+ ["Use too many colours","Every bar shouts, so nothing stands out.","Grey for context, one colour for the message.",rainbow(),focus()],
+ ["Map raw counts","The big city always looks worst simply because more people live there.","Map rates per 100,000.",tiles(false),tiles(true)],
+ ["Use a pie chart with many slices","People cannot compare nine similar angles.","A bar chart (keep age groups in order) or a waffle chart.",manyPie(),waffleBar()]
+];
+var h='';ROWS.forEach(function(r,i){h+='<div class="dont"><div class="dont-h"><div><h3>'+(i+1)+'. Don’t: '+esc(r[0])+'</h3><p><b>Why it misleads:</b> '+esc(r[1])+'</p><p><b>Better choice:</b> '+esc(r[2])+'</p></div>'+
+  '<button class="show-ex" aria-expanded="false" aria-controls="dx'+i+'">Show example</button></div>'+
+  '<div class="dont-ex" id="dx'+i+'" hidden><figure class="bad"><figcaption>✗ Bad</figcaption>'+r[3]+'</figure><figure class="good"><figcaption>✓ Better</figcaption>'+r[4]+'</figure></div></div>'});
+h+='<div class="row"><button id="showAllEx">Show all examples</button></div><p class="cap">All examples use illustrative data.</p>';
+$("#dontList").innerHTML=h;
+function setEx(b,open){var ex=$("#"+b.getAttribute("aria-controls"));ex.hidden=!open;b.setAttribute("aria-expanded",open);b.textContent=open?"Hide example":"Show example"}
+$$(".show-ex").forEach(function(b){b.onclick=function(){setEx(b,b.getAttribute("aria-expanded")!=="true")}});
+$("#showAllEx").onclick=function(){var open=this.textContent.indexOf("Show")===0;$$(".show-ex").forEach(function(b){setEx(b,open)});this.textContent=open?"Hide all examples":"Show all examples"};
+})();
+
+renderNav();route();
+})();
+</script>
+
+</body>
+</html>
